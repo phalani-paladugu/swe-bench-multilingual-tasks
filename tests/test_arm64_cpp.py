@@ -101,8 +101,9 @@ class CppGenerationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             task = Path(directory) / "fmtlib__fmt-3901"
             shutil.copytree(TASKS_DIR / task.name, task)
-            original = (task / "Dockerfile").read_text()
-            (task / "Dockerfile.amd").write_text(original)
+            archive = task / "Dockerfile.amd"
+            original = (archive if archive.exists() else task / "Dockerfile").read_text()
+            archive.write_text(original)
             (task / "Dockerfile").write_text((task / "Dockerfile.arm64").read_text())
             base = "ubuntu:22.04@sha256:" + "a" * 64
             self.assertIn("--target format-test", generate_recipe(task, base))

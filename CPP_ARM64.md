@@ -15,10 +15,28 @@ cannot be selected from this repository.
 
 ## ARM64 Dockerfiles
 
-All 12 task directories now contain a **`Dockerfile.arm64`** alongside the original
-x86 `Dockerfile`. These are usable build recipes, but **C++ images have not been
-built or benchmark-validated**: Docker Desktop currently requires administrator-
-mandated organization sign-in before it will run or build containers.
+All **12 native ARM64 images were built and validated on November 5, 2026**.
+They are retained in the local Docker engine as
+`sweb.eval.arm64.<instance-id>:latest`. **The images have not been published to a
+container registry.**
+
+Validation passed for all 14 FAIL_TO_PASS selectors (fail on baseline, pass with
+the gold patch) and all 745 PASS_TO_PASS selectors (pass in both). Each image was
+built twice, with an identical inspected package inventory, compiler/toolchain,
+and source checkout. mini-swe-agent 2.4.6 also started all 12 images and executed
+their native toolchains with networking disabled and zero model calls.
+
+Each task directory contains:
+
+- `Dockerfile`: the verified ARM64 recipe with pinned package versions and an
+  installed-package checksum.
+- `Dockerfile.arm64`: the minimal ARM translation of the original x86 recipe.
+- `Dockerfile.amd`: the original x86 Dockerfile, preserved byte-for-byte.
+- `apt-packages.arm64.txt` and `arm64-lock.json`: the package snapshot, source
+  and generator hashes, toolchain details, and baseline/gold validation results.
+
+The table links to the minimal recipes; use each task's `Dockerfile` to rebuild
+the verified environment.
 
 | Task | ARM64 Dockerfile | Build target |
 | --- | --- | --- |
@@ -37,8 +55,8 @@ mandated organization sign-in before it will run or build containers.
 
 ### Matching the x86 environment
 
-Each saved recipe is byte-for-byte identical to the original x86 Dockerfile
-**except for its `FROM` line**:
+Each `Dockerfile.arm64` is byte-for-byte identical to the archived x86
+`Dockerfile.amd` **except for its `FROM` line**:
 
 ```dockerfile
 FROM --platform=linux/arm64 ubuntu:22.04@sha256:a8fb2ba88181746111cbbe2969826d6546b71226785b196c93d2c3445a25000d
@@ -55,22 +73,22 @@ This establishes **recipe parity**, not verified parity with a previously built
 x86 image. The original recipe runs an unpinned `apt update && apt install`, so
 today's packages may differ from those in the historical x86 image. ARM64 also
 uses native ARM binaries, compiler targets, and Ubuntu archive endpoints.
-Exact package/toolchain comparison and behavioral equivalence require running
-both environments. The validation workflow below freezes observed ARM package
-versions and checks baseline/gold outcomes.
+Historical x86 package/toolchain versions have not been compared directly.
+The ARM environments have passed the original baseline/gold benchmark checks;
+their observed package versions are frozen in the verified Dockerfiles.
 
 The upstream `/root/.bashrc` line referencing Miniconda is preserved as part of
 recipe parity; these Ubuntu C++ recipes do not install Conda. Build and validation
 commands use non-interactive Bash and do not depend on that initialization.
 
-### Build a saved recipe
+### Rebuild a verified image
 
 From the repository root, with an available Docker builder:
 
 ```bash
 task=fmtlib__fmt-3901
 docker buildx build --platform linux/arm64 --load \
-  -f "tasks/$task/Dockerfile.arm64" \
+  -f "tasks/$task/Dockerfile" \
   -t "sweb.eval.arm64.$task:latest" "tasks/$task"
 ```
 
@@ -80,13 +98,15 @@ To build all 12 sequentially:
 .venv/bin/python -c 'import json; print("\n".join(json.load(open("arm64-cpp-images.json"))))' |
 while IFS= read -r task; do
   docker buildx build --platform linux/arm64 --load \
-    -f "tasks/$task/Dockerfile.arm64" \
+    -f "tasks/$task/Dockerfile" \
     -t "sweb.eval.arm64.$task:latest" "tasks/$task" || exit 1
 done
 ```
 
-These direct builds do not run benchmark validation or create verified lock files.
-The pipeline below performs those additional steps.
+These direct builds use the committed package pins and inventory checksum,
+but do not rerun benchmark validation or update the lock records. The pipeline
+below rebuilds and validates the images. Building `Dockerfile.arm64` instead
+uses the original unpinned apt recipe, so package versions may change over time.
 
 ### Regenerate the recipes without Docker
 
@@ -105,13 +125,13 @@ the repository root:
 
 ```bash
 .venv/bin/python -m pip install -e .
-.venv/bin/dockerfile-gen-arm64-cpp
+.venv/bin/dockerfile-gen-arm64-cpp --refresh-lock
 ```
 
 For one task:
 
 ```bash
-.venv/bin/dockerfile-gen-arm64-cpp --instance_ids fmtlib__fmt-3901
+.venv/bin/dockerfile-gen-arm64-cpp --refresh-lock --instance_ids fmtlib__fmt-3901
 ```
 
 The adapter follows the existing resolve, freeze, rebuild, and offline-validate
@@ -151,9 +171,11 @@ Package versions are frozen, but a future rebuild still needs those package
 versions to remain available in the configured apt repositories. This does not
 create an archival package mirror or make image builds offline.
 
-Existing passing locks are reused for Dockerfile regeneration. Use
-`--refresh-lock` to repeat builds and tests while retaining the saved base digest
-and package versions. Detailed logs are saved under `logs/arm64/cpp/`.
+Without `--refresh-lock`, existing passing locks are reused to regenerate
+Dockerfiles without rebuilding images. `--refresh-lock` repeats builds and tests
+while retaining the saved base digest and package versions. Detailed build/test
+logs, `local-images.json`, and `mini-swe-smoke.json` are saved locally under
+`logs/arm64/cpp/`; per-task validation records are committed in `arm64-lock.json`.
 
 ## mini-swe-agent
 
@@ -168,8 +190,8 @@ Export the C++ inference dataset:
   --output-dir runs/mini-swe-arm64-cpp
 ```
 
-After all images have passed validation, check mini-swe-agent's Docker integration
-without making model calls:
+Repeat the completed mini-swe-agent Docker integration check without making
+model calls:
 
 ```bash
 HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1 \
@@ -191,5 +213,6 @@ With your model/provider configured, run inference:
 
 The ARM overlay requires local images and prevents an x86 image fallback.
 Inference generates candidate patches; grading those patches is a separate step.
-These commands have not yet been integration-tested with the C++ images because
-Docker Desktop sign-in is blocking the builds.
+Container startup, task selection, native toolchains, working directories,
+base commits, and disabled networking were checked for all 12 C++ images.
+Model-driven inference has not been run as part of these environment checks.

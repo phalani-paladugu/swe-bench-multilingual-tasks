@@ -21,11 +21,12 @@ def main():
     parser.add_argument("--dataset-dir", type=Path, default=ROOT / "runs" / "mini-swe-arm64")
     parser.add_argument("--instance-ids", nargs="+")
     parser.add_argument("--report", type=Path, default=ROOT / "logs" / "arm64" / "mini-swe-smoke.json")
+    parser.add_argument("--images", type=Path, default=ROOT / "arm64-images.json")
     args = parser.parse_args()
     instances = list(load_dataset(str(args.dataset_dir), split="test"))
-    images = json.loads((ROOT / "arm64-images.json").read_text())
+    images = json.loads(args.images.read_text())
     if {row["instance_id"] for row in instances} != set(images) or len(instances) != len(images):
-        raise ValueError("Dataset must contain exactly the selected 16 ARM tasks")
+        raise ValueError("Dataset must contain exactly the tasks in the selected image mapping")
     if args.instance_ids:
         if not set(args.instance_ids) <= set(images):
             parser.error("Unknown instance ID")
@@ -38,7 +39,11 @@ def main():
         if get_swebench_docker_image_name(row) != images[name]:
             raise ValueError(f"Wrong image selected for {name}")
         lock = json.loads((ROOT / "tasks" / name / "arm64-lock.json").read_text())
-        toolchain = "java -version 2>&1 && mvnd --version" if lock["language"] == "java" else "rustc -Vv && cargo -V"
+        toolchain = {
+            "java": "java -version 2>&1 && mvnd --version",
+            "rust": "rustc -Vv && cargo -V",
+            "cpp": "g++ --version && cmake --version && ctest --version",
+        }[lock["language"]]
         env = get_sb_environment(config, row)
         try:
             command = "set -e; uname -m; pwd; git rev-parse HEAD; " + toolchain

@@ -2,6 +2,8 @@
 
 This fork includes [16 ARM64 Java/Rust task environments](ARM64.md), with dependency locks and baseline/gold validation records.
 
+The [12-task C++ ARM64 workflow](CPP_ARM64.md) is prepared; native builds and validation are pending Docker Desktop sign-in.
+
 Dockerfile generator for SWE-bench Multilingual benchmarks (C, Go, Java, JavaScript, PHP, Ruby, Rust).
 
 ## Usage

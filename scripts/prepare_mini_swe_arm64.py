@@ -14,8 +14,9 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, default=ROOT / "runs" / "mini-swe-arm64")
+    parser.add_argument("--images", type=Path, default=ROOT / "arm64-images.json")
     args = parser.parse_args()
-    images = json.loads((ROOT / "arm64-images.json").read_text())
+    images = json.loads(args.images.read_text())
     rows = []
     for instance_id, image in images.items():
         task = ROOT / "tasks" / instance_id

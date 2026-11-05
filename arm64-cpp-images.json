@@ -1,0 +1,14 @@
+{
+  "fmtlib__fmt-1683": "sweb.eval.arm64.fmtlib__fmt-1683:latest",
+  "fmtlib__fmt-2310": "sweb.eval.arm64.fmtlib__fmt-2310:latest",
+  "fmtlib__fmt-2317": "sweb.eval.arm64.fmtlib__fmt-2317:latest",
+  "fmtlib__fmt-2457": "sweb.eval.arm64.fmtlib__fmt-2457:latest",
+  "fmtlib__fmt-3158": "sweb.eval.arm64.fmtlib__fmt-3158:latest",
+  "fmtlib__fmt-3248": "sweb.eval.arm64.fmtlib__fmt-3248:latest",
+  "fmtlib__fmt-3272": "sweb.eval.arm64.fmtlib__fmt-3272:latest",
+  "fmtlib__fmt-3729": "sweb.eval.arm64.fmtlib__fmt-3729:latest",
+  "fmtlib__fmt-3750": "sweb.eval.arm64.fmtlib__fmt-3750:latest",
+  "fmtlib__fmt-3863": "sweb.eval.arm64.fmtlib__fmt-3863:latest",
+  "fmtlib__fmt-3901": "sweb.eval.arm64.fmtlib__fmt-3901:latest",
+  "nlohmann__json-4237": "sweb.eval.arm64.nlohmann__json-4237:latest"
+}

@@ -15,6 +15,7 @@ dependencies = [
 [project.scripts]
 dockerfile-gen = "dockerfile_gen:main"
 dockerfile-gen-arm64 = "dockerfile_gen.arm64:main"
+dockerfile-gen-arm64-cpp = "dockerfile_gen.arm64_cpp:main"
 
 [tool.setuptools.packages.find]
 include = ["dockerfile_gen*"]

@@ -1,0 +1,18 @@
+{
+  "google__gson-2024": "sweb.eval.arm64.google__gson-2024:latest",
+  "google__gson-2061": "sweb.eval.arm64.google__gson-2061:latest",
+  "google__gson-2134": "sweb.eval.arm64.google__gson-2134:latest",
+  "google__gson-2158": "sweb.eval.arm64.google__gson-2158:latest",
+  "google__gson-2311": "sweb.eval.arm64.google__gson-2311:latest",
+  "google__gson-2479": "sweb.eval.arm64.google__gson-2479:latest",
+  "javaparser__javaparser-4538": "sweb.eval.arm64.javaparser__javaparser-4538:latest",
+  "javaparser__javaparser-4561": "sweb.eval.arm64.javaparser__javaparser-4561:latest",
+  "burntsushi__ripgrep-2209": "sweb.eval.arm64.burntsushi__ripgrep-2209:latest",
+  "burntsushi__ripgrep-2576": "sweb.eval.arm64.burntsushi__ripgrep-2576:latest",
+  "sharkdp__bat-2393": "sweb.eval.arm64.sharkdp__bat-2393:latest",
+  "sharkdp__bat-2650": "sweb.eval.arm64.sharkdp__bat-2650:latest",
+  "tokio-rs__tokio-6724": "sweb.eval.arm64.tokio-rs__tokio-6724:latest",
+  "tokio-rs__tokio-6838": "sweb.eval.arm64.tokio-rs__tokio-6838:latest",
+  "tokio-rs__tokio-4867": "sweb.eval.arm64.tokio-rs__tokio-4867:latest",
+  "tokio-rs__tokio-6603": "sweb.eval.arm64.tokio-rs__tokio-6603:latest"
+}

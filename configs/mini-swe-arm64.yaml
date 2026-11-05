@@ -1,0 +1,19 @@
+# Merge after mini-swe-agent's bundled swebench.yaml.
+environment:
+  environment_class: docker
+  cwd: /testbed
+  interpreter: [bash, -c]
+  timeout: 180
+  run_args:
+    - --rm
+    - --platform=linux/arm64
+    - --pull=never
+    - --network=none
+    - --cpus=2
+    - --memory=4g
+  env:
+    BASH_ENV: /dev/null
+run:
+  env_startup_command: >-
+    test "$(uname -m)" = aarch64 &&
+    test "$(git rev-parse HEAD)" = '{{ base_commit }}'

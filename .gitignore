@@ -7,3 +7,5 @@ build/
 .venv/
 *.DS_Store
 logs/arm64/
+.venv-mini/
+runs/

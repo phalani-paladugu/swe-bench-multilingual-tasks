@@ -165,3 +165,9 @@ final CLI/provenance refinements changed generator source hashes. The `inputs`
 field records the final generator after its output was confirmed identical to
 the independently built Dockerfile; original verification timestamps and test
 outcomes are preserved.
+
+## Run an agent
+
+See [mini-swe-agent on ARM64](MINI_SWE_ARM64.md) for the 16-task dataset export,
+explicit ARM image selection, a model-free integration check, and batch inference
+commands.

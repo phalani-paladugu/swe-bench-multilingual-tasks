@@ -71,7 +71,10 @@ def phase(task: Path, image: str, logs: Path, *, gold: bool):
             run("git apply /tmp/gold.patch")
         run("git apply /tmp/test.patch")
         # Upstream C++ build lists include cd commands; execute in one shell.
-        build_script = "set -euo pipefail\n" + "\n".join(specs.get("build", []))
+        # Only validation's rebuilds limit workers; saved recipes keep nproc.
+        commands = [command.replace("--parallel $(nproc)", "--parallel 2")
+                    for command in specs.get("build", [])]
+        build_script = "set -euo pipefail\n" + "\n".join(commands)
         setup = run(build_script, check=False)
         (logs / f"{phase_name}-build.log").write_text(build_script + "\n" + setup.stdout + setup.stderr)
         if setup.returncode:

@@ -5,7 +5,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from dockerfile_gen.arm64_cpp import (
-    CPP_REPOS, SELECTED_CPP, generate, package_text, resolve, task_spec,
+    CPP_REPOS, SELECTED_CPP, generate, generate_recipe, package_text,
+    recipe_base, resolve, task_spec, write_recipe,
 )
 from dockerfile_gen.arm64_cpp_validate import doctest_results, googletest_results
 from dockerfile_gen.tasks import TASKS_DIR, load_task, task_dirs
@@ -62,9 +63,58 @@ class CppGenerationTests(unittest.TestCase):
         self.assertIn("FROM --platform=linux/arm64", result)
         self.assertIn("cmake=3.22.1-1ubuntu1.22.04.2", result)
         self.assertIn("g++=4:11.2.0-1ubuntu1", result)
-        self.assertIn("--parallel 2 --target format-test", result)
-        self.assertNotIn("/opt/miniconda3", result)
+        self.assertIn("--parallel $(nproc) --target format-test", result)
+        self.assertIn("/opt/miniconda3", result)
+        self.assertNotIn("CMAKE_BUILD_PARALLEL_LEVEL", result)
         self.assertEqual(before, {name: (task / name).read_bytes() for name in before})
+
+    def test_all_committed_recipes_change_only_the_from_instruction(self):
+        for name in SELECTED_CPP:
+            with self.subTest(task=name):
+                task = TASKS_DIR / name
+                base = recipe_base(task)
+                archive = task / "Dockerfile.amd"
+                original = (archive if archive.exists() else task / "Dockerfile").read_bytes()
+                expected = original.replace(
+                    b"FROM --platform=linux/amd64 ubuntu:22.04\n",
+                    f"FROM --platform=linux/arm64 {base}\n".encode(),
+                )
+                self.assertNotEqual(expected, original)
+                self.assertEqual((task / "Dockerfile.arm64").read_bytes(), expected)
+                self.assertEqual(generate_recipe(task, base).encode(), expected)
+
+    def test_recipe_regeneration_preserves_inputs_and_reuses_saved_digest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            task = Path(directory) / "fmtlib__fmt-3901"
+            shutil.copytree(TASKS_DIR / task.name, task)
+            before = {p.name: p.read_bytes() for p in task.iterdir() if p.is_file()}
+            with patch("dockerfile_gen.arm64_cpp.arm_base", side_effect=AssertionError("No tag lookup")):
+                write_recipe(task)
+            after = {p.name: p.read_bytes() for p in task.iterdir() if p.is_file()}
+            self.assertEqual(before, after)
+            path = task / "Dockerfile.arm64"
+            path.write_text(path.read_text().replace("--target format-test", "--target wrong-test"))
+            with self.assertRaisesRegex(ValueError, "ARM recipe differs"):
+                recipe_base(task)
+
+    def test_recipe_uses_x86_archive_and_rejects_unexpected_bases(self):
+        with tempfile.TemporaryDirectory() as directory:
+            task = Path(directory) / "fmtlib__fmt-3901"
+            shutil.copytree(TASKS_DIR / task.name, task)
+            original = (task / "Dockerfile").read_text()
+            (task / "Dockerfile.amd").write_text(original)
+            (task / "Dockerfile").write_text((task / "Dockerfile.arm64").read_text())
+            base = "ubuntu:22.04@sha256:" + "a" * 64
+            self.assertIn("--target format-test", generate_recipe(task, base))
+            for invalid in ("ubuntu:22.04", "ubuntu:24.04@sha256:" + "a" * 64):
+                with self.assertRaisesRegex(ValueError, "pinned Ubuntu 22.04"):
+                    generate_recipe(task, invalid)
+            (task / "Dockerfile.amd").write_text(original.replace("ubuntu:22.04", "ubuntu:24.04"))
+            with self.assertRaisesRegex(ValueError, "original Ubuntu 22.04"):
+                generate_recipe(task, base)
+            (task / "Dockerfile.amd").write_text(original + "\nFROM scratch\n")
+            with self.assertRaisesRegex(ValueError, "exactly one"):
+                generate_recipe(task, base)
 
     def test_package_snapshot_is_sorted_and_invalid_pins_rejected(self):
         self.assertEqual(package_text({"z": "2", "a": "1"}), "a\t1\nz\t2\n")

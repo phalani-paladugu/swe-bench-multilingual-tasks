@@ -23,7 +23,8 @@ def main():
         metadata = yaml.safe_load((task / "task.yaml").read_text())
         if not re.fullmatch(r"[0-9a-f]{40}", metadata["base_commit"]):
             raise ValueError(f"Invalid base commit for {instance_id}")
-        if metadata["instance_id"] != instance_id or not image.startswith("sweb.eval.arm64."):
+        image_repository = image.rsplit("/", 1)[-1].split("@", 1)[0].split(":", 1)[0]
+        if metadata["instance_id"] != instance_id or image_repository != f"sweb.eval.arm64.{instance_id}":
             raise ValueError(f"Invalid ARM task mapping for {instance_id}")
         rows.append({
             "instance_id": instance_id,

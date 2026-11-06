@@ -107,8 +107,9 @@ docker buildx build --platform linux/arm64 --load \
 The original `task.yaml` still references its upstream x86 image. Configure the
 evaluation harness to use the ARM image, using the mappings in
 `arm64-images.json`; do not let it silently pull the original x86 image.
-This repository publishes Dockerfiles and verification records, not registry
-images.
+The eight Java images are also [published on Docker Hub](DOCKER_HUB.md), alongside
+the 12 C++ images. [arm64-dockerhub-images.json](arm64-dockerhub-images.json)
+provides digest-pinned registry references for those 20 tasks.
 
 The base digest, Rust dependency graph, Maven artifact content, and toolchain
 versions are checked. Apt package versions are inventoried and compared between

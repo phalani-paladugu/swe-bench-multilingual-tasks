@@ -16,9 +16,10 @@ cannot be selected from this repository.
 ## ARM64 Dockerfiles
 
 All **12 native ARM64 images were built and validated on November 5, 2026**.
-They are retained in the local Docker engine as
-`sweb.eval.arm64.<instance-id>:latest`. **The images have not been published to a
-container registry.**
+They are retained locally as `sweb.eval.arm64.<instance-id>:latest` and are
+[published on Docker Hub](DOCKER_HUB.md) under `phalanipaladugu84963`.
+Use [arm64-dockerhub-images.json](arm64-dockerhub-images.json) for digest-pinned
+registry references.
 
 Validation passed for all 14 FAIL_TO_PASS selectors (fail on baseline, pass with
 the gold patch) and all 745 PASS_TO_PASS selectors (pass in both). Each image was

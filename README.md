@@ -2,7 +2,7 @@
 
 This fork includes [16 ARM64 Java/Rust task environments](ARM64.md), with dependency locks and baseline/gold validation records.
 
-The [12 C++ ARM64 environments](CPP_ARM64.md) are also built and validated, with pinned dependencies, original x86 Dockerfile archives, and successful mini-swe-agent startup checks. The images are retained locally; they have not been published to a container registry.
+The [12 C++ ARM64 environments](CPP_ARM64.md) are also built and validated, with pinned dependencies, original x86 Dockerfile archives, and successful mini-swe-agent startup checks. The 12 C++ and eight Java images are [published on Docker Hub](DOCKER_HUB.md), with digest-pinned mappings and pull instructions.
 
 Dockerfile generator for SWE-bench Multilingual benchmarks (C, Go, Java, JavaScript, PHP, Ruby, Rust).
 

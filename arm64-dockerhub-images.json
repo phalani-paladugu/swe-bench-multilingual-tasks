@@ -1,0 +1,22 @@
+{
+  "fmtlib__fmt-1683": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-1683@sha256:0dbe8e34a132e3910eb7adaca03fccc5992defec8119ed99dd24af6b82241940",
+  "fmtlib__fmt-2310": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-2310@sha256:af24d3676dec1797f6f200ea05c04ae9a92b795bdf5ca094a72a4e15b4fe3ed0",
+  "fmtlib__fmt-2317": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-2317@sha256:5f996a6680a85150c5a9c56e3e07be5cec92214a09ca6892a8771ef719a61c60",
+  "fmtlib__fmt-2457": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-2457@sha256:899c25360ac5109a946800627f5272b4f11e228414cda0b4cbe86261623c02fd",
+  "fmtlib__fmt-3158": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-3158@sha256:4b020f563f1d6746e097b65ce1585a7b18cba0ec97775661b56f443f78271f76",
+  "fmtlib__fmt-3248": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-3248@sha256:af8be540c0fa90b645d0401f9440c84189f81459a3e3a0be2f4db18fa5ab3067",
+  "fmtlib__fmt-3272": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-3272@sha256:f59b23386affdac5ad1a65507e75f30b5a3c7867c40ddb13f0f5cce31d186fa4",
+  "fmtlib__fmt-3729": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-3729@sha256:17ed87f5eac502fbf07c56831608111222ca88b98c5b8ae16fb5b46d51765d28",
+  "fmtlib__fmt-3750": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-3750@sha256:bd2958709a71086f45dc0767538389b497d5a5c97881d5ca4dbb2a21d230e585",
+  "fmtlib__fmt-3863": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-3863@sha256:d7ca5ea9fc5f8f3a15c075c30ff91ddec21b7e54a0ef0d06d14a5eea0e40664a",
+  "fmtlib__fmt-3901": "docker.io/phalanipaladugu84963/sweb.eval.arm64.fmtlib__fmt-3901@sha256:224b8cf36e3a949c1aa5e15aa8e90b6670d1b0f8e1f8b6b36574ce9a56b5e0df",
+  "nlohmann__json-4237": "docker.io/phalanipaladugu84963/sweb.eval.arm64.nlohmann__json-4237@sha256:f8431d35eb4520aecc79aaff54d9f27d0f5ef69693e753a87c88888cfae879e0",
+  "google__gson-2024": "docker.io/phalanipaladugu84963/sweb.eval.arm64.google__gson-2024@sha256:3b897bd4d933b65e59f1c0bae4ad3f6ad070895b7cfa42f0d2ac9c7e17dbbf54",
+  "google__gson-2061": "docker.io/phalanipaladugu84963/sweb.eval.arm64.google__gson-2061@sha256:ee2cacff4569895ca4bb0611c8ad0ea87fb1e633213b7ca708bdb49ce13d3190",
+  "google__gson-2134": "docker.io/phalanipaladugu84963/sweb.eval.arm64.google__gson-2134@sha256:c8cb5801a206c6cb94da39661c5bbd1212ce456b3fe011a20425a8887f7c93f1",
+  "google__gson-2158": "docker.io/phalanipaladugu84963/sweb.eval.arm64.google__gson-2158@sha256:20ef192ecd2d4f1660bbe8361e75ee120c3ddfb33b0180e58781f4568114702f",
+  "google__gson-2311": "docker.io/phalanipaladugu84963/sweb.eval.arm64.google__gson-2311@sha256:995e3762456b3c500dd576414dcf6e3849d27842869e63edb3c57b1503d8d4b4",
+  "google__gson-2479": "docker.io/phalanipaladugu84963/sweb.eval.arm64.google__gson-2479@sha256:4e07938f49721d3d24e1076bcfb8a3634e9174b7079bb862ede764a110a19774",
+  "javaparser__javaparser-4538": "docker.io/phalanipaladugu84963/sweb.eval.arm64.javaparser__javaparser-4538@sha256:68f28073dee5c6e623d371c1299be052fc85927d0c4baac20967b19489a6db01",
+  "javaparser__javaparser-4561": "docker.io/phalanipaladugu84963/sweb.eval.arm64.javaparser__javaparser-4561@sha256:2cd6f440c32256fe6edc07afc48740f973c224fa7bd6dcfc926e9d2cfaef6873"
+}
